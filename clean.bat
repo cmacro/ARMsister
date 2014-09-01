@@ -1,3 +1,5 @@
+@echo off
+
 del *.bak /s/q
 del *.o /s/q
 del *.d /s/q
@@ -6,4 +8,6 @@ del *.htm /s/q
 del *.lst /s/q
 del *.crf /s/q
 del *.map /s/q
-pause
+rem pause
+
+@echo on
