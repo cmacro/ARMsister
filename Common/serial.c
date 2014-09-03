@@ -50,7 +50,7 @@ void serial_init(void)
   //
   // 清除设置后上面配置为系统默认状态
   
-  //int i;
+  int i;
   /// 使能复用功能，使能GPIOA，使能USART1
   RCC->APB2ENR |= RCC_APB2ENR_AFIOEN | RCC_APB2ENR_IOPAEN | RCC_APB2ENR_USART1EN;
   // 关闭映射，确保USART使用 PA9，PA10
@@ -79,7 +79,7 @@ void serial_init(void)
   USART1->CR3 = USART_CR3_REST;           // 没用控制流
   
   // 防止产生不必要的信息
-  //for (i = 0; i < 0x1000; i++) __NOP();
+  for (i = 0; i < 0x1000; i++) __NOP();
   
   // USART1 使能, 使能输出，使能输入
   USART1->CR1 =  USART_CR1_UE | USART_CR1_TE | USART_CR1_RE;

@@ -91,12 +91,12 @@ int main(void)
     Delay(20);
     while (!(USART1->SR & USART_SR_TXE));
     USART1->DR = ud;
-    ud++;    
+    //ud++;    
     
-    if (ud > 'z') {
-      ud = 'a';
-      printf("\n");
-    }
+//    if (ud > 'z') {
+//      ud = 'a';
+//      printf("\n");
+//    }
   };   	
   
 }

@@ -21,8 +21,6 @@
 void serial_init(void);
 
 
-
-
 #ifdef __cplusplus    
   }
 #endif

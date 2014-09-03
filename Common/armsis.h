@@ -38,7 +38,6 @@
 #define GPIO_CR_AFIN_PULLDOWN         (uint32_t)0x88888888  // 复用上拉下拉输入
 
 
-#define USART_BRR_9600                (uint32_t)0x00001D4C  //468.75
 #define USART_CR1_REST                (uint32_t)0x00000000
 #define USART_CR2_REST                (uint32_t)0x00000000
 #define USART_CR3_REST                (uint32_t)0x00000000
