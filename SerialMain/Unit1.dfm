@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 611
-  Top = 289
+  Left = 248
+  Top = 232
   Width = 606
   Height = 409
   Caption = #20018#21475#35843#35797' '#23567#31302#29645#34255#29256
@@ -13,6 +13,7 @@ object frmMain: TfrmMain
   Font.Name = #24494#36719#38597#40657
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   DesignSize = (
     590
     371)
@@ -69,7 +70,6 @@ object frmMain: TfrmMain
     ResetOnChanged = False
     ItemHeight = 19
     TabOrder = 0
-    Text = 'COM1 ('#36890#20449#31471#21475')'
     Anchors = [akLeft, akTop, akRight]
   end
   object Memo1: TMemo
