@@ -28,6 +28,7 @@
 
 int fputc(int ch, FILE *f)
 {
+  // 等待USART1 数据发送完成（发送区域空）
   while (!(USART1->SR & USART_SR_TXE));
   USART1->DR = (ch & 0x1FF);
   

@@ -68,7 +68,7 @@ int main(void)
 {
   uint8_t ud = 'a';
   Delay_init();
-  TestPortB_Configuration();
+  //TestPortB_Configuration();
   serial_init();
    
   
@@ -79,7 +79,7 @@ int main(void)
     ud++;
   }
     
-  TestPortB_FlickerSignal();
+  //TestPortB_FlickerSignal();
     
   printf("\ntest!\n");
   printf("USART1 使能, 使能输出，使能输入\n");
