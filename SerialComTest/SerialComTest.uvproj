@@ -443,14 +443,14 @@
           <GroupName>common</GroupName>
           <Files>
             <File>
-              <FileName>serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Common\serial.c</FilePath>
-            </File>
-            <File>
               <FileName>armsis.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Common\armsis.c</FilePath>
+              <FilePath>.\Common\armsis.c</FilePath>
+            </File>
+            <File>
+              <FileName>serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Common\serial.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -893,14 +893,14 @@
           <GroupName>common</GroupName>
           <Files>
             <File>
-              <FileName>serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Common\serial.c</FilePath>
-            </File>
-            <File>
               <FileName>armsis.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Common\armsis.c</FilePath>
+              <FilePath>.\Common\armsis.c</FilePath>
+            </File>
+            <File>
+              <FileName>serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Common\serial.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1264,7 +1264,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>.\inc;..\CMSIS;..\Common</IncludePath>
+              <IncludePath>.\inc;..\CMSIS;.\Common</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1343,14 +1343,14 @@
           <GroupName>common</GroupName>
           <Files>
             <File>
-              <FileName>serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Common\serial.c</FilePath>
-            </File>
-            <File>
               <FileName>armsis.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Common\armsis.c</FilePath>
+              <FilePath>.\Common\armsis.c</FilePath>
+            </File>
+            <File>
+              <FileName>serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Common\serial.c</FilePath>
             </File>
           </Files>
         </Group>

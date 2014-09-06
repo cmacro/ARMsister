@@ -729,12 +729,12 @@
       <GroupNumber>4</GroupNumber>
       <FileNumber>5</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Common\serial.c</PathWithFileName>
-      <FilenameWithoutPath>serial.c</FilenameWithoutPath>
+      <PathWithFileName>.\Common\armsis.c</PathWithFileName>
+      <FilenameWithoutPath>armsis.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -746,8 +746,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\Common\armsis.c</PathWithFileName>
-      <FilenameWithoutPath>armsis.c</FilenameWithoutPath>
+      <PathWithFileName>.\Common\serial.c</PathWithFileName>
+      <FilenameWithoutPath>serial.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
