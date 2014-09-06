@@ -1,5 +1,5 @@
 Dependencies for Project 'SerialComTest', Target 'Flash': (DO NOT MODIFY !)
-F (.\src\main.c)(0x540A9CDF)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I..\CMSIS -I.\Common-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\output\flash\main.o --omf_browse .\output\flash\main.crf --depend .\output\flash\main.d)
+F (.\src\main.c)(0x540A9D07)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I..\CMSIS -I.\Common-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\output\flash\main.o --omf_browse .\output\flash\main.crf --depend .\output\flash\main.d)
 I (.\Common\armsis.h)(0x540A9C16)
 I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h)(0x528979E6)
 I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cm3.h)(0x538426C6)
