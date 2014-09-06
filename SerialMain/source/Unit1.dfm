@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 248
-  Top = 232
+  Left = 278
+  Top = 235
   Width = 606
   Height = 409
   Caption = #20018#21475#35843#35797' '#23567#31302#29645#34255#29256
@@ -14,6 +14,8 @@ object frmMain: TfrmMain
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   DesignSize = (
     590
     371)
@@ -70,6 +72,7 @@ object frmMain: TfrmMain
     ResetOnChanged = False
     ItemHeight = 19
     TabOrder = 0
+    Text = 'COM1 ('#36890#20449#31471#21475')'
     Anchors = [akLeft, akTop, akRight]
   end
   object Memo1: TMemo
@@ -133,6 +136,16 @@ object frmMain: TfrmMain
     Caption = #25171#24320
     TabOrder = 7
     OnClick = Button1Click
+  end
+  object Button2: TButton
+    Left = 96
+    Top = 320
+    Width = 147
+    Height = 25
+    Anchors = [akLeft, akBottom]
+    Caption = #28165#31354#28040#24687
+    TabOrder = 8
+    OnClick = Button2Click
   end
   object nrComm1: TnrComm
     Active = False
