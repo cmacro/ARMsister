@@ -38,46 +38,42 @@
 #define SetDataOutputMode       GPIOB->CRL = GPIO_CR_GPOUT_PP2MHz; \
                                 GPIOB->CRH = GPIO_CR_GPOUT_PP2MHz; 
                                 
-                                
-
 #define SetData(x)              GPIOB->ODR = x    // 设置端口数据
 #define GetData                 GPIOB->IDR        // 获取端口数据
-
-uint8_t   LCD_Succended   = 0x1;
-uint16_t  LCD_DeviceCode  = 0x0;
-
 
 //    底层函数
 void LCD_CtrlLinesConfig(void)
 {
-  /**
-  * LCD GPIO configuration
-  *
-    Control line
-    PA0    ---------->  CS
-    PA1    ---------->  REST
-    PA5    ---------->  RS
-    PA6    ---------->  RW
-    PA7    ---------->  RD
-
-    Data line
-    PB00    ----------> DB0
-    PB01    ----------> DB1
-    PB02    ----------> DB2
-    PB03    ----------> DB3
-    PB04    ----------> DB4
-    PB05    ----------> DB5
-    PB06    ----------> DB6
-    PB07    ----------> DB7
-    PB08    ----------> DB10
-    PB09    ----------> DB11
-    PB10    ----------> DB12
-    PB11    ----------> DB13
-    PB12    ----------> DB14
-    PB13    ----------> DB15
-    PB14    ----------> DB16
-    PB15    ----------> DB17
-  **/    
+  /**************************************
+   * LCD GPIO configuration
+   **************************************
+   *  Control line
+   * ------------------------------------
+   *  PA0    ---------->  CS
+   *  PA1    ---------->  REST
+   *  PA5    ---------->  RS
+   *  PA6    ---------->  RW
+   *  PA7    ---------->  RD
+   * ------------------------------------
+   * Data line
+   * ------------------------------------
+   *  PB00    ----------> DB0
+   *  PB01    ----------> DB1
+   *  PB02    ----------> DB2
+   *  PB03    ----------> DB3
+   *  PB04    ----------> DB4
+   *  PB05    ----------> DB5
+   *  PB06    ----------> DB6
+   *  PB07    ----------> DB7
+   *  PB08    ----------> DB10
+   *  PB09    ----------> DB11
+   *  PB10    ----------> DB12
+   *  PB11    ----------> DB13
+   *  PB12    ----------> DB14
+   *  PB13    ----------> DB15
+   *  PB14    ----------> DB16
+   *  PB15    ----------> DB17
+  ***************************************/    
   
   //
   // 打开控制线
@@ -113,33 +109,35 @@ void LCD_CtrlLinesConfig(void)
   Set_WR;
   Set_RD;
   Set_RSET;
-  Delay(20);
+  //Delay(50);
 }
 
 //// 基础函数
 void LCD_WriteReg(uint8_t reg, uint16_t val)
 {
   // 读取寄存器
-  //   16线模式
+  //   16bit模式
   //   
+  // nCS       ----\____________________________/----------
+  // RS        ------\__________/--------------------------
+  // nRD       --------------------------------------------
+  // nWR       ---------\_____/----------\_____/-----------
+  // DB[17:0]  ------\/-------------\/------------\/-------
+  // DB[17:0]        || write index || write data ||
+  // DB[17:0]  ------/\-------------/\------------/\-------
+
   SetDataOutputMode;
   
   Clr_CS;
   
   Clr_RS;
   Set_RD;
-  //Delay_us(1);
   SetData(reg);
-  //Delay_us(1);
   Clr_WR;
   Set_WR;
   Set_RS;
   
-  Set_RS;
-  Set_RD;
-  //Delay_us(1);
   SetData(val);
-  //Delay_us(1);
   Clr_WR;
   Set_WR;
   
@@ -148,15 +146,24 @@ void LCD_WriteReg(uint8_t reg, uint16_t val)
 
 uint16_t LCD_ReadReg(uint16_t reg)
 {
-  // 写寄存器
-  //    16线模式
+  // 读取寄存器
+  //    16bit模式
+  //
+  // nCS       ----\_____________________________________/------
+  // RS        ------\__________/-------------------------------
+  // nRD       -------------------------\_____/-----------------
+  // nWR       ---------\_____/---------------------------------
+  // DB[17:0]  ------\/-------------\   /------------\
+  // DB[17:0]        || write index |---| read  data |----------
+  // DB[17:0]  ------/\-------------/   \------------/
+  
 	uint16_t d;
   
   SetDataOutputMode;
   
 	Clr_CS;
   
-	Set_RS;
+	Clr_RS;
 	Set_RD;
   SetData(reg);
   Clr_WR;
@@ -176,10 +183,9 @@ uint16_t LCD_ReadReg(uint16_t reg)
 uint16_t LCD_ReadDriverCode(void)
 {
   uint16_t d;
-  Delay(20);
   LCD_WriteReg(0x00, 0x0001);
-  Delay(20);
-  
+  // 写入寄存器后需要延迟，再读取。否则第一无法正确读取
+  Delay(1);                   
   d = LCD_ReadReg(0x00);
   
   return d;
@@ -187,8 +193,8 @@ uint16_t LCD_ReadDriverCode(void)
 
 int main(void)
 {
-  uint8_t i;
-  __IO uint16_t code = 0x0f00;
+  uint16_t row = 0x0000;
+  __IO uint16_t code = 0x000f; // 值 0x000f用来测试B组引脚状态（流水灯）
   
   Delay_init();
   serial_init();
@@ -197,22 +203,20 @@ int main(void)
   printf("********************\nserial test \n********************\n");
   Delay(50);
   
+  // LCD 设置控制线  
   LCD_CtrlLinesConfig();
-  
-  // 设置控制线  
-  //LCD_CtrlLinesConfig();
-  // 读取LCD驱动ID
-  //code = ReadLCDDriverCode();
-  
-  // 显示
+ 
   while (1){  
-    //code = LCD_ReadDriverCode();
-    //printf("%x\n", code);
-    //Delay(100);
-		code = code << 1 | code >> 15;
-		GPIOB->ODR = code;    
-    Delay(10);
-    
+    // LCD 获取ID 测试
+    code = LCD_ReadDriverCode();
+    row++;
+    printf("N:%-4d  %#x\n", row, code);
+    Delay(100);
+      
+    /// B组引脚流水灯测试
+		//code = code << 1 | code >> 15;
+		//GPIOB->ODR = code;    
+    //Delay(10);
   };   	
   
 }
