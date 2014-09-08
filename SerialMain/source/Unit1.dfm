@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 278
-  Top = 235
+  Left = 405
+  Top = 220
   Width = 606
   Height = 409
   Caption = #20018#21475#35843#35797' '#23567#31302#29645#34255#29256
@@ -68,19 +68,19 @@ object frmMain: TfrmMain
     Top = 32
     Width = 466
     Height = 27
-    nrComm = nrComm1
     ResetOnChanged = False
     ItemHeight = 19
     TabOrder = 0
-    Text = 'COM1 ('#36890#20449#31471#21475')'
     Anchors = [akLeft, akTop, akRight]
   end
-  object Memo1: TMemo
+  object memLog: TMemo
     Left = 264
     Top = 72
     Width = 298
     Height = 272
     Anchors = [akLeft, akTop, akRight, akBottom]
+    PopupMenu = PopupMenu1
+    ScrollBars = ssVertical
     TabOrder = 1
   end
   object cbxBaudRate: TComboBox
@@ -128,16 +128,16 @@ object frmMain: TfrmMain
     TabOrder = 6
     Text = 'None'
   end
-  object Button1: TButton
+  object btnActive: TButton
     Left = 96
     Top = 256
     Width = 145
     Height = 25
     Caption = #25171#24320
     TabOrder = 7
-    OnClick = Button1Click
+    OnClick = btnActiveClick
   end
-  object Button2: TButton
+  object btnClean: TButton
     Left = 96
     Top = 320
     Width = 147
@@ -145,30 +145,15 @@ object frmMain: TfrmMain
     Anchors = [akLeft, akBottom]
     Caption = #28165#31354#28040#24687
     TabOrder = 8
-    OnClick = Button2Click
+    OnClick = btnCleanClick
   end
-  object nrComm1: TnrComm
-    Active = False
-    BaudRate = 9600
-    Parity = pNone
-    StopBits = sbOne
-    ByteSize = 8
-    ComPortNo = 1
-    ComPort = cpCOM1
-    TraceStates = []
-    EventChar = #0
-    StreamProtocol = spNone
-    BufferInSize = 4096
-    BufferOutSize = 4096
-    TimeoutRead = 0
-    TimeoutWrite = 100
-    RS485Mode = False
-    EnumPorts = epFullPresent
-    UseMainThread = True
-    Terminal = Memo1
-    TerminalUsage = tuBoth
-    TerminalEcho = False
-    Left = 400
-    Top = 112
+  object PopupMenu1: TPopupMenu
+    AutoHotkeys = maManual
+    Left = 304
+    Top = 120
+    object miSaveLog: TMenuItem
+      Caption = #20445#23384#26085#24535'(&s)'
+      OnClick = miSaveLogClick
+    end
   end
 end

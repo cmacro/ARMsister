@@ -2,16 +2,17 @@ unit Unit1;
 
 interface
 
+{$define BuildComm}
+
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, nrclasses, nrcomm, nrcommbox, ComCtrls;
+  Dialogs, StdCtrls, nrclasses, nrcomm, nrcommbox, ComCtrls, Menus;
 
 type
   TfrmMain = class(TForm)
     nrDeviceBox1: TnrDeviceBox;
-    nrComm1: TnrComm;
     Label1: TLabel;
-    Memo1: TMemo;
+    memLog: TMemo;
     cbxBaudRate: TComboBox;
     ComboBox2: TComboBox;
     ComboBox3: TComboBox;
@@ -22,13 +23,17 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    Button1: TButton;
-    Button2: TButton;
-    procedure Button1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    btnActive: TButton;
+    btnClean: TButton;
+    PopupMenu1: TPopupMenu;
+    miSaveLog: TMenuItem;
+    procedure btnActiveClick(Sender: TObject);
+    procedure btnCleanClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure miSaveLogClick(Sender: TObject);
   private    { Private declarations }
+    FComm: TnrComm;
     procedure UpdateCommParams;
     function  GetConfigFile: string;
     procedure ReadConfigs;
@@ -47,39 +52,75 @@ uses
 
 {$R *.dfm}
 
+function GetFileVersion(const FileName: string): string;
+var
+  pInfo: PVSFixedFileInfo;
+  pBuf: pointer;
+  iSize: Cardinal;
+  dump: Cardinal;
+begin
+  Result:='';
+  iSize := GetFileVersionInfoSize(PChar(FileName), dump);
+  if iSize <> 0 then
+  begin
+    try
+      GetMem(pBuf, iSize);
+      try
+        GetFileVersionInfo(PChar(FileName), 0, iSize, pBuf);
+        if VerQueryValue(pBuf, '\', Pointer(pInfo), dump) then
+          Result := format('%d.%d.%d.%d', [
+                    HIWORD(pInfo.dwFileVersionMS),
+                    LOWORD(pInfo.dwFileVersionMS),
+                    HIWORD(pInfo.dwFileVersionLS),
+                    LOWORD(pInfo.dwFileVersionLS)
+                    ])
+      finally
+        FreeMem(pBuf);
+      end;
+    except
+      Result := '-1';
+    end;
+  end;
+end;
+
+function GetAppVersion:String;
+begin
+  Result:=GetFileVersion(Application.ExeName);
+end;
+
 procedure TfrmMain.WMDeviceChange(var Msg: TMessage);
 var i:integer;
 begin
-  i := nrComm1.DeviceIndex;
-  nrComm1.WMDeviceChange(Msg);
-  nrComm1.DeviceIndex := i;
+  i := FComm.DeviceIndex;
+  FComm.WMDeviceChange(Msg);
+  FComm.DeviceIndex := i;
   //nrDeviceBox1Change(Self);
 end;
 
-procedure TfrmMain.Button1Click(Sender: TObject);
+procedure TfrmMain.btnActiveClick(Sender: TObject);
 begin
-  if not nrComm1.Active then
+  if not FComm.Active then
     UpdateCommParams;
 
-  nrComm1.Active := not nrComm1.Active;
-  if nrComm1.Active then
-    Button1.Caption := '停止'
+  FComm.Active := not FComm.Active;
+  if FComm.Active then
+    btnActive.Caption := '停止'
   else
-    Button1.Caption := '打开'
+    btnActive.Caption := '打开'
 end;
 
 procedure TfrmMain.UpdateCommParams;
 begin
-  nrComm1.BaudRate := StrToIntDef(cbxBaudRate.Text, 9600);
-  nrComm1.ByteSize := Byte(StrToIntDef(cbxBaudRate.Text, 8));
-  nrComm1.Parity := pNone;
-  nrComm1.StopBits := sbOne;
-  nrComm1.StreamProtocol := spNone;
+  FComm.BaudRate := StrToIntDef(cbxBaudRate.Text, 9600);
+  FComm.ByteSize := Byte(StrToIntDef(cbxBaudRate.Text, 8));
+  FComm.Parity := pNone;
+  FComm.StopBits := sbOne;
+  FComm.StreamProtocol := spNone;
 end;
 
-procedure TfrmMain.Button2Click(Sender: TObject);
+procedure TfrmMain.btnCleanClick(Sender: TObject);
 begin
-  Memo1.clear;
+  memLog.clear;
 end;
 
 function DirJoint(const AName, ARoot: string):string;
@@ -114,9 +155,9 @@ begin
   begin
     cFile := TIniFile.Create(sFileName);
     try
-      nrComm1.ComPortNo := cFile.ReadInteger('COMM', 'PortNo', 1);
-      nrComm1.BaudRate  := Cardinal(cFile.ReadInteger('COMM', 'BaudRate', 9600));
-      nrComm1.ByteSize  := Byte(cFile.ReadInteger('COMM', 'ByteSize', 8));
+      FComm.ComPortNo := cFile.ReadInteger('COMM', 'PortNo', 1);
+      FComm.BaudRate  := Cardinal(cFile.ReadInteger('COMM', 'BaudRate', 9600));
+      FComm.ByteSize  := Byte(cFile.ReadInteger('COMM', 'ByteSize', 8));
     finally
       cFile.Free;
     end;
@@ -135,22 +176,78 @@ begin
 
   cFile := TIniFile.Create(sFileName);
   try
-    cFile.WriteInteger('COMM', 'PortNo', nrComm1.ComPortNo);
-    cFile.WriteInteger('COMM', 'BaudRate', nrComm1.BaudRate);
-    cFile.WriteInteger('COMM', 'ByteSize', nrComm1.ByteSize);
+    cFile.WriteInteger('COMM', 'PortNo', FComm.ComPortNo);
+    cFile.WriteInteger('COMM', 'BaudRate', FComm.BaudRate);
+    cFile.WriteInteger('COMM', 'ByteSize', FComm.ByteSize);
   finally
     cFile.Free;
   end;
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
+var
+  sVer: string;
 begin
+  sVer := GetAppVersion;
+  if sVer <> '' then
+    Caption := format('%s V:%s', [Caption, sVer]);
+
+{$ifdef BuildComm}
+  FComm := TnrComm.Create(Self);
+  with FComm do
+  begin
+    EnumPorts := epFullPresent;
+
+    BaudRate := 9600;
+    ByteSize := 8;
+    Parity := pNone;
+    StopBits := sbOne;
+    StreamProtocol := spNone;
+    RS485Mode := False;
+
+    TraceStates := [];
+    EventChar := #0;
+    TimeoutRead := 0;
+    TimeoutWrite := 100;
+    UseMainThread := True;
+    TerminalUsage := tuReceive;
+    TerminalEcho := False;
+  end;
+{$endif}
+
+  nrDeviceBox1.nrComm := FComm;
+  FComm.Terminal := memLog;
+
   ReadConfigs;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
   WriteConfigs;
+  {$ifdef BuildComm}
+  FComm.Free;
+  {$endif}
+end;
+
+procedure TfrmMain.miSaveLogClick(Sender: TObject);
+var
+  cDlg: TSaveDialog;
+  sFileName: string;
+begin
+  sFileName := '';
+  cDlg := TSaveDialog.Create(Self);
+  try
+    cDlg.Filter := '日志文件(*.log)|*.log|文本文件(*.txt)|*.txt|所有文件(*.*)|*.*';
+    cDlg.FilterIndex := 0;
+    cDlg.DefaultExt := 'log';
+    if cDlg.Execute then
+      sFileName := cDlg.FileName;
+  finally
+    cDlg.Free;
+  end;
+
+  if sFileName <> '' then
+    memLog.Lines.SaveToFile(sFileName);
 end;
 
 end.
