@@ -1,0 +1,52 @@
+Dependencies for Project 'LCDTest', Target 'Flash': (DO NOT MODIFY !)
+F (.\src\main.c)(0x54131DAD)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I..\CMSIS -I.\common-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\output\flash\main.o --omf_browse .\output\flash\main.crf --depend .\output\flash\main.d)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x53463A44)
+I (.\common\armsis.h)(0x540AB11F)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h)(0x528979E6)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cm3.h)(0x538426C6)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x53463A44)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmInstr.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmFunc.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\system_stm32f10x.h)(0x4F1E2E3C)
+I (.\common\serial.h)(0x54131BC3)
+I (.\inc\lcd.h)(0x540C79B0)
+I (.\inc\fonts.h)(0x53E7956D)
+F (.\src\lcd.c)(0x54130BA7)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I..\CMSIS -I.\common-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\output\flash\lcd.o --omf_browse .\output\flash\lcd.crf --depend .\output\flash\lcd.d)
+I (.\inc\lcd.h)(0x540C79B0)
+I (.\common\armsis.h)(0x540AB11F)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h)(0x528979E6)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cm3.h)(0x538426C6)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x53463A44)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmInstr.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmFunc.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\system_stm32f10x.h)(0x4F1E2E3C)
+I (.\common\serial.h)(0x54131BC3)
+I (.\inc\fonts.h)(0x53E7956D)
+F (..\CMSIS\setup_stm32f10x.c)(0x54004825)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I..\CMSIS -I.\common-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\output\flash\setup_stm32f10x.o --omf_browse .\output\flash\setup_stm32f10x.crf --depend .\output\flash\setup_stm32f10x.d)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h)(0x528979E6)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cm3.h)(0x538426C6)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x53463A44)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmInstr.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmFunc.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\system_stm32f10x.h)(0x4F1E2E3C)
+F (..\CMSIS\startup_stm32f10x_md.s)(0x5400686B)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include--list .\output\flash\startup_stm32f10x_md.lst --xref -o .\output\flash\startup_stm32f10x_md.o --depend .\output\flash\startup_stm32f10x_md.d)
+F (.\readme.txt)(0x53E785D1)()
+F (.\common\armsis.c)(0x540BB474)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I..\CMSIS -I.\common-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\output\flash\armsis.o --omf_browse .\output\flash\armsis.crf --depend .\output\flash\armsis.d)
+I (common\armsis.h)(0x540AB11F)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h)(0x528979E6)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cm3.h)(0x538426C6)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x53463A44)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmInstr.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmFunc.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\system_stm32f10x.h)(0x4F1E2E3C)
+I (common\serial.h)(0x54131BC3)
+F (.\common\serial.c)(0x54131BA6)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I..\CMSIS -I.\common-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\output\flash\serial.o --omf_browse .\output\flash\serial.crf --depend .\output\flash\serial.d)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x53463A44)
+I (common\armsis.h)(0x540AB11F)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h)(0x528979E6)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cm3.h)(0x538426C6)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x53463A44)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmInstr.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmFunc.h)(0x5302A2D0)
+I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\system_stm32f10x.h)(0x4F1E2E3C)
+I (common\serial.h)(0x54131BC3)
