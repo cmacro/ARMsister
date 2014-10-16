@@ -1,27 +1,0 @@
-Dependencies for Project 'USART_RD', Target 'USART_Sim': (DO NOT MODIFY !)
-F (.\src\armsis.c)(0x540067E2)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I.\CMSIS-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\sim\armsis.o --omf_browse .\sim\armsis.crf --depend .\sim\armsis.d)
-I (.\inc\armsis.h)(0x5401FF87)
-I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h)(0x528979E6)
-I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cm3.h)(0x538426C6)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x53463A44)
-I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmInstr.h)(0x5302A2D0)
-I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmFunc.h)(0x5302A2D0)
-I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\system_stm32f10x.h)(0x4F1E2E3C)
-F (.\src\main.c)(0x54020790)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I.\CMSIS-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\sim\main.o --omf_browse .\sim\main.crf --depend .\sim\main.d)
-I (.\inc\armsis.h)(0x5401FF87)
-I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h)(0x528979E6)
-I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cm3.h)(0x538426C6)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x53463A44)
-I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmInstr.h)(0x5302A2D0)
-I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmFunc.h)(0x5302A2D0)
-I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\system_stm32f10x.h)(0x4F1E2E3C)
-I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x53463A44)
-F (.\CMSIS\setup_stm32f10x.c)(0x54004825)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I.\inc -I.\CMSIS-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-DSTM32F10X_MD -DSTM32F10X_MD-o .\sim\setup_stm32f10x.o --omf_browse .\sim\setup_stm32f10x.crf --depend .\sim\setup_stm32f10x.d)
-I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h)(0x528979E6)
-I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cm3.h)(0x538426C6)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x53463A44)
-I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmInstr.h)(0x5302A2D0)
-I (d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include\core_cmFunc.h)(0x5302A2D0)
-I (d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\system_stm32f10x.h)(0x4F1E2E3C)
-F (.\CMSIS\startup_stm32f10x_md.s)(0x5400686B)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I d:\Keil_v5\ARM\RV31\INC-I d:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include--list .\sim\startup_stm32f10x_md.lst --xref -o .\sim\startup_stm32f10x_md.o --depend .\sim\startup_stm32f10x_md.d)
-F (.\readme.txt)(0x53E785D1)()

@@ -36,6 +36,13 @@ int fputc(int ch, FILE *f)
 }
 
 
+void serial_send(u8 d)
+{
+  while (!(USART1->SR & USART_SR_TXE));
+  USART1->DR = (d & 0x1FF);  
+}
+
+
 void serial_init(void)
 {
   //

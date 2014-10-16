@@ -27,11 +27,14 @@ type
     btnClean: TButton;
     PopupMenu1: TPopupMenu;
     miSaveLog: TMenuItem;
+    Edit1: TEdit;
+    Button1: TButton;
     procedure btnActiveClick(Sender: TObject);
     procedure btnCleanClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure miSaveLogClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private    { Private declarations }
     FComm: TnrComm;
     procedure UpdateCommParams;
@@ -248,6 +251,11 @@ begin
 
   if sFileName <> '' then
     memLog.Lines.SaveToFile(sFileName);
+end;
+
+procedure TfrmMain.Button1Click(Sender: TObject);
+begin
+  FComm.SendString(Edit1.Text + #13);
 end;
 
 end.

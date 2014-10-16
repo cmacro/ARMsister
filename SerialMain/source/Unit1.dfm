@@ -77,7 +77,7 @@ object frmMain: TfrmMain
     Left = 264
     Top = 72
     Width = 298
-    Height = 272
+    Height = 241
     Anchors = [akLeft, akTop, akRight, akBottom]
     PopupMenu = PopupMenu1
     ScrollBars = ssVertical
@@ -146,6 +146,25 @@ object frmMain: TfrmMain
     Caption = #28165#31354#28040#24687
     TabOrder = 8
     OnClick = btnCleanClick
+  end
+  object Edit1: TEdit
+    Left = 264
+    Top = 320
+    Width = 233
+    Height = 27
+    Anchors = [akLeft, akRight, akBottom]
+    TabOrder = 9
+    Text = '07 0123'
+  end
+  object Button1: TButton
+    Left = 504
+    Top = 320
+    Width = 59
+    Height = 25
+    Anchors = [akRight, akBottom]
+    Caption = #21457#36865
+    TabOrder = 10
+    OnClick = Button1Click
   end
   object PopupMenu1: TPopupMenu
     AutoHotkeys = maManual

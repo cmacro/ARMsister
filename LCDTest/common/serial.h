@@ -19,6 +19,7 @@
 #endif
 
 void serial_init(void);
+void serial_send(u8 d);
 
 
 #ifdef __cplusplus    
