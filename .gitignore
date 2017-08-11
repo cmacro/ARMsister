@@ -1,1 +1,11 @@
-/SerialMain/Copy2localtest.bat
+*~
+*.o
+*.lo
+*.la
+*.ce
+*.cce
+*.he
+*.obj
+Objects
+DebugConfig
+Listings
