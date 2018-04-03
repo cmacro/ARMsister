@@ -110,12 +110,12 @@
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
           <SimDllArguments> -REMAP</SimDllArguments>
-          <SimDlgDll>DCM.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pCM3</SimDlgDllArguments>
+          <SimDlgDll>DARMSTM.dll</SimDlgDll>
+          <SimDlgDllArguments>-pSTM32F103C8</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TCM.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCM3</TargetDlgDllArguments>
+          <TargetDlgDllArguments>-pSTM32F103C8</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -384,16 +384,16 @@
               <FileType>1</FileType>
               <FilePath>..\src\Main.c</FilePath>
             </File>
-            <File>
-              <FileName>system_stm32f1xx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\system_stm32f1xx.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>CMSIS</GroupName>
           <Files>
+            <File>
+              <FileName>system_stm32f1xx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\system_stm32f1xx.c</FilePath>
+            </File>
             <File>
               <FileName>startup_stm32f103xb.s</FileName>
               <FileType>2</FileType>
@@ -413,6 +413,31 @@
               <FileName>system_stm32f1xx.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CMSIS\system_stm32f1xx.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>comm</GroupName>
+          <Files>
+            <File>
+              <FileName>armsis.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\armsis.c</FilePath>
+            </File>
+            <File>
+              <FileName>armsis.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\src\armsis.h</FilePath>
+            </File>
+            <File>
+              <FileName>serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>serial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\src\serial.h</FilePath>
             </File>
           </Files>
         </Group>
