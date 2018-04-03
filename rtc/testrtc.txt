@@ -1,0 +1,64 @@
+Configuration	testrtc
+STM32CubeMX 	4.23.0
+Date	04/03/2018
+MCU	STM32F103C8Tx
+
+
+
+PERIPHERALS	MODES	FUNCTIONS	PINS
+I2C1	I2C	I2C1_SCL	PB6
+I2C1	I2C	I2C1_SDA	PB7
+RCC	BYPASS Clock Source	RCC_OSC_IN	PD0-OSC_IN
+RCC	BYPASS Clock Source	RCC_OSC_OUT	PD1-OSC_OUT
+RCC	BYPASS Clock Source	RCC_OSC32_IN	PC14-OSC32_IN
+RCC	BYPASS Clock Source	RCC_OSC32_OUT	PC15-OSC32_OUT
+RTC	Activate Clock Source	RTC_VS_RTC_Activate	VP_RTC_VS_RTC_Activate
+RTC	Activate Calendar	RTC_VS_RTC_Calendar	VP_RTC_VS_RTC_Calendar
+SYS	No Debug	SYS_VS_ND	VP_SYS_VS_ND
+SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
+TIM2	PWM Generation CH1	TIM2_CH1	PA15
+TIM2	PWM Generation CH2	TIM2_CH2	PB3
+TIM2	PWM Generation CH3	TIM2_CH3	PA2
+TIM2	PWM Generation CH4	TIM2_CH4	PA3
+
+
+
+Pin Nb	PINs	FUNCTIONs	LABELs
+3	PC14-OSC32_IN	RCC_OSC32_IN	
+4	PC15-OSC32_OUT	RCC_OSC32_OUT	
+5	PD0-OSC_IN	RCC_OSC_IN	
+6	PD1-OSC_OUT	RCC_OSC_OUT	
+12	PA2	TIM2_CH3	
+13	PA3	TIM2_CH4	
+38	PA15	TIM2_CH1	
+39	PB3	TIM2_CH2	
+42	PB6	I2C1_SCL	
+43	PB7	I2C1_SDA	
+
+
+
+SOFTWARE PROJECT
+
+Project Settings : 
+Project Name : testrtc
+Project Folder : D:\docs\works\DIY\LED\code\testrtc
+Toolchain / IDE : MDK-ARM V5
+Firmware Package Name and Version : STM32Cube FW_F1 V1.6.1
+
+
+Code Generation Settings : 
+STM32Cube Firmware Library Package : Copy only the necessary library files
+Generate peripheral initialization as a pair of '.c/.h' files per peripheral : No
+Backup previously generated files when re-generating : No
+Delete previously generated files when not re-generated : Yes
+Set all free pins as analog (to optimize the power consumption) : No
+
+
+Toolchains Settings : 
+Compiler Optimizations : Balanced Size/Speed
+
+
+
+
+
+
