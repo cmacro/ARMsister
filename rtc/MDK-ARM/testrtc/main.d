@@ -7,3 +7,7 @@ testrtc\main.o: ../Drivers/CMSIS/Include/core_cmInstr.h
 testrtc\main.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 testrtc\main.o: ../Drivers/CMSIS/Include/core_cmFunc.h
 testrtc\main.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h
+testrtc\main.o: ../Src/armsis.h
+testrtc\main.o: ../Src/serial.h
+testrtc\main.o: ../Src/rtc.h
+testrtc\main.o: ../Src/led.h

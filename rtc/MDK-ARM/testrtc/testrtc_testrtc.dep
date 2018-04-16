@@ -1,11 +1,49 @@
 Dependencies for Project 'testrtc', Target 'testrtc': (DO NOT MODIFY !)
-F (startup_stm32f103xb.s)(0x5AC347BB)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_testrtc-Ie:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-Ie:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 523" --pd "STM32F10X_MD SETA 1"--list startup_stm32f103xb.lst --xref -o testrtc\startup_stm32f103xb.o --depend testrtc\startup_stm32f103xb.d)
-F (../Src/main.c)(0x5AC39646)(-c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99-I.\RTE\_testrtc-Ie:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-Ie:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_MD -DSTM32F103xB-o testrtc\main.o --omf_browse testrtc\main.crf --depend testrtc\main.d)
-I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5AC3472E)
-I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x5AC3472E)
-I (../Drivers/CMSIS/Include/core_cm3.h)(0x5AC34731)
+F (startup_stm32f103xb.s)(0x5AC3A548)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_testrtc-Ie:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-Ie:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 523" --pd "STM32F10X_MD SETA 1"--list startup_stm32f103xb.lst --xref -o testrtc\startup_stm32f103xb.o --depend testrtc\startup_stm32f103xb.d)
+F (../Src/main.c)(0x5AC5B695)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99-I.\RTE\_testrtc-Ie:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-Ie:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_MD -DSTM32F103xB-o testrtc\main.o --omf_browse testrtc\main.crf --depend testrtc\main.d)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x5AC3A548)
 I (e:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
-I (../Drivers/CMSIS/Include/core_cmInstr.h)(0x5AC34731)
-I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5AC34731)
-I (../Drivers/CMSIS/Include/core_cmFunc.h)(0x5AC34731)
-I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5AC3472E)
+I (../Drivers/CMSIS/Include/core_cmInstr.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/core_cmFunc.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5AC3A548)
+I (../Src/armsis.h)(0x5AC5ABE4)
+I (../Src/serial.h)(0x5AC3A547)
+I (../Src/rtc.h)(0x5AC58099)
+I (../Src/led.h)(0x5AC5B684)
+F (..\Src\armsis.c)(0x5AC5BF83)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99-I.\RTE\_testrtc-Ie:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-Ie:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_MD -DSTM32F103xB-o testrtc\armsis.o --omf_browse testrtc\armsis.crf --depend testrtc\armsis.d)
+I (..\Src\armsis.h)(0x5AC5ABE4)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x5AC3A548)
+I (e:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (../Drivers/CMSIS/Include/core_cmInstr.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/core_cmFunc.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5AC3A548)
+I (..\Src\serial.h)(0x5AC3A547)
+F (..\Src\rtc.c)(0x5AC5BD06)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99-I.\RTE\_testrtc-Ie:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-Ie:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_MD -DSTM32F103xB-o testrtc\rtc.o --omf_browse testrtc\rtc.crf --depend testrtc\rtc.d)
+I (..\Src\rtc.h)(0x5AC58099)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x5AC3A548)
+I (e:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (../Drivers/CMSIS/Include/core_cmInstr.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/core_cmFunc.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5AC3A548)
+F (..\Src\led.c)(0x5AC5B129)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include --C99-I.\RTE\_testrtc-Ie:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include-Ie:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="523" -DSTM32F10X_MD -DSTM32F103xB-o testrtc\led.o --omf_browse testrtc\led.crf --depend testrtc\led.d)
+I (..\Src\led.h)(0x5AC5B684)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/core_cm3.h)(0x5AC3A548)
+I (e:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
+I (../Drivers/CMSIS/Include/core_cmInstr.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Include/core_cmFunc.h)(0x5AC3A548)
+I (../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h)(0x5AC3A548)
+F (..\Src\armsis.h)(0x5AC5ABE4)()
+F (..\Src\rtc.h)(0x5AC58099)()
+F (..\Src\led.h)(0x5AC5B684)()
