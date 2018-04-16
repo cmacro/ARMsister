@@ -4,7 +4,7 @@
 #define IsLeapYear(y)       ((y % 4 == 0) && ((y % 100 != 0) || (y % 400 == 0))) 
 #define RCT_WaitRtOff()     while (!(RTC->CRL & RTC_CRL_RTOFF))         // 等待RTC寄存器操作完成
 
-int8_t RCT_init(void)
+int8_t RTC_init(void)
 {
     int16_t temp = 0;
 
@@ -47,7 +47,7 @@ int8_t RCT_init(void)
 
 // 日期转秒
 const uint8_t mon_table[12]={31,28,31,30,31,30,31,31,30,31,30,31}; 
-uint8_t RCT_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec)
+uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec)
 {
   uint16_t t;
   uint32_t seccount = 0;
@@ -87,4 +87,16 @@ uint8_t RCT_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_
   while (!(RTC->CRL & RTC_CRL_RTOFF));  //等待 RTC 寄存器操作完成
   
   return 0;
+}
+
+uint32_t RTC_GetTime(void) {
+    uint32_t timecnt;
+    
+    timecnt = RTC->CNTH;
+    timecnt <<= 16;
+    timecnt += RTC->CNTL;
+    
+    timecnt %= 86400;   // 只要时间就OK了
+    
+    return timecnt;
 }

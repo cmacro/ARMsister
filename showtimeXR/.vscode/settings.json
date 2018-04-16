@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "stm32f1xx.h": "c",
+        "stm32f103xb.h": "c",
+        "core_cm3.h": "c",
+        "stdint.h": "c",
+        "system_stm32f1xx.h": "c"
+    }
+    // "C_Cpp.errorSquiggles": "Disabled"
+}
