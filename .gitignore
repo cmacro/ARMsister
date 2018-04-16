@@ -6,6 +6,10 @@
 *.cce
 *.he
 *.obj
+*.d
 Objects
 DebugConfig
 Listings
+
+/showtimeXR/out
+/showtimeXR/MDK-ARM/testrtc
