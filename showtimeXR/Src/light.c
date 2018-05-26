@@ -4,42 +4,39 @@
 #include <stddef.h> // needed for definition of NULL
 #include <stdlib.h> // malloc
 
-#define MAXCFGS 12
-
-#define GPIO_CRH_MODE9_2MHz   GPIO_CRH_MODE9_1
-#define GPIO_CRH_CNF9_AOPP    GPIO_CRH_CNF9_1
-#define TIM_CR2_MMS_CP        (TIM_CR2_MMS_0 | TIM_CR2_MMS_1)
-#define TIM_CCMR2_OC4M_PWM1   (TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4M_2)
+#define MAXCFGS     12      // 可配置亮度比例数量
+#define CHANNELCNT  8       // pwm通道数量
 
 typedef struct
 {
     uint32_t remnant; // 倒计时状态切换
-    uint16_t currrate; // 当前亮度  
-    uint16_t nextrate; // 下个亮度 （倒计时完成后的亮度)
+    uint8_t currrate; // 当前亮度  100%
+    uint8_t nextrate; // 下个亮度 （倒计时完成后的亮度) 100%
     uint8_t count;
-    uint32_t cfgs[MAXCFGS];
+    uint32_t cfgs[MAXCFGS];  // 100%  31~23位 亮度百分比， 19~0位 时间
 
 } LedItem_t;
 
 #define Light_CfgTime(d)            ((d) & 0xFFFFF)
 #define Light_CfgRate(d)            ((d) >> 24 & 0xFF)
-#define Light_CfgSetOfTime(r, t)    (((r) & 0xFF) << 24 | ((t) & 0xFFFFF))  
+#define Light_CfgSetOfTime(r, t)    (((r) & 0xFF) << 24 | ((t) & 0xFFFFF))
 
 typedef struct
 {
     uint8_t selectChannel; // 当前选择的通道
     uint8_t channelcount;
-    uint16_t maxratio;    // 灯光总最大亮度
+    uint8_t maxratio;    // 灯光总最大亮度 100%
     uint16_t updatestate; // 是否需要刷新
     uint32_t switchstate; // 开关状态  00 -- auto   01 -- close   10 -- open
-    LedItem_t items[8];
+    LedItem_t items[CHANNELCNT];
 } LedData_t;
 
 static LedData_t leddata;
 
+
 //#define time_arr 0x77 // 24(23+1)  12MHz / 120 = 100KHz
-#define time_arr  120//0x59F
-#define MaxChannel 7  // 最大led通道
+#define time_arr  239
+#define MaxChannel CHANNELCNT - 1  // 最大led通道
 
 #define Light_LumMaxRatio leddata.maxratio
 
@@ -47,16 +44,16 @@ static LedData_t leddata;
 #define Light_TuruStateSet(c) (leddata.updatestate |= 0x1 << (c))
 #define Light_TuruStateClr(c) (leddata.updatestate &= ~(0x1 << (c)))
 
-#define Light_SWITCHSTATE_AUTO 0X00
-#define Light_SWITCHSTATE_ON 0x01
-#define Light_SWITCHSTATE_OFF 0X10
+// 手动开关状态
+#define Light_SWITCHSTATE_AUTO  0X00    // 
+#define Light_SWITCHSTATE_ON    0x01
+#define Light_SWITCHSTATE_OFF   0X10
 
 static void Light_LoadChannelData(uint8_t c, uint32_t t);
-
 #define Light_SwitchGet(c)          (leddata.switchstate >> (c << 1) & 0xFF)
 #define Light_SwitchSet(c, s)       (leddata.switchstate |= (s) << (c << 1))
 #define Light_ChannelTimeStep(c)    if (leddata.items[c].remnant) leddata.items[c].remnant--
-// static void Light_ChannelRemantCheck(uint8_t c);
+
 
 #define Light_UpdateChannel(c)      if (Light_TurnStateGet(c)) { Light_TuruStateClr(c); Light_UpdatePWM(c); }
 static void Light_UpdatePWM(uint8_t c);
@@ -136,7 +133,7 @@ int8_t Light_init(void)
     TIM3->CCER = TIM_CCER_CC1E | TIM_CCER_CC2E | TIM_CCER_CC3E | TIM_CCER_CC4E;
     TIM3->CR1 |= TIM_CR1_CEN | TIM_CR1_ARPE;
 
-    
+
     // TIME4 设置
     TIM4->CR1 = 0x0U;
     TIM4->CCER = 0X0U;  // 配置前关闭时钟
@@ -152,8 +149,8 @@ int8_t Light_init(void)
                    TIM_CCMR1_OC2PE | TIM_CCMR1_OC2M_1 | TIM_CCMR1_OC2M_2;
     TIM4->CCMR2 |= TIM_CCMR2_OC3PE | TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3M_2 |
                    TIM_CCMR2_OC4PE | TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4M_2;
-    TIM4->ARR = 720;
-    TIM4->PSC = 25;
+    TIM4->ARR = time_arr;
+    TIM4->PSC = 0;
     TIM4->CCER = TIM_CCER_CC1E | TIM_CCER_CC2E | TIM_CCER_CC3E | TIM_CCER_CC4E;
     TIM4->CR1 |= TIM_CR1_CEN | TIM_CR1_ARPE;
 
@@ -173,23 +170,11 @@ static void Light_LoadChannelData(uint8_t c, uint32_t t)
 static void Light_AddChannelCfg(uint8_t c, uint16_t r, uint16_t h, uint16_t m, uint16_t s) {
     // 设置通道时间
     uint32_t t;
-    
-    t = h * 60 * 60 + m *60 + s; 
+
+    t = h * 60 * 60 + m * 60 + s;
     if (leddata.items[c].count >= MAXCFGS) return;
     leddata.items[c].cfgs[leddata.items[c].count] = Light_CfgSetOfTime(r, t);
     leddata.items[c].count++;
-}
-
-static void Light_AddCfg(uint16_t r, uint16_t h, uint16_t m, uint16_t s) 
-{
-    Light_AddChannelCfg(0, r, h, m, s);
-    Light_AddChannelCfg(1, r, h, m, s);
-    Light_AddChannelCfg(2, r, h, m, s);
-    Light_AddChannelCfg(3, r, h, m, s);
-    Light_AddChannelCfg(4, r, h, m, s);
-    Light_AddChannelCfg(5, r, h, m, s);
-    Light_AddChannelCfg(6, r, h, m, s);
-    Light_AddChannelCfg(7, r, h, m, s);
 }
 
 void Light_LoadConfig(uint32_t t)
@@ -207,85 +192,73 @@ void Light_LoadConfig(uint32_t t)
     leddata.maxratio = 100;
     leddata.channelcount = 8;
 
-    Light_AddCfg(0, 8, 0, 0);
-    Light_AddCfg(20, 8, 0, 1);
-    Light_AddCfg(40, 8, 0, 2);
-    Light_AddCfg(60, 8, 0, 3);
-    Light_AddCfg(80, 8, 0, 4);
-    Light_AddCfg(100, 8, 0, 5);
-    Light_AddCfg(0, 8, 1, 0);
- 
-
-/*
     // 1     Cool White
-    
-    Light_ChannelTimeSet(0, 10, 8 * 60);
-    Light_ChannelTimeSet(0, 30, 8 * 60 + 10);
-    Light_ChannelTimeSet(0, 60, 8 * 60 + 30);
-    Light_ChannelTimeSet(0, 90, 9 * 60);
-    Light_ChannelTimeSet(0, 100, 10 * 60);
-    Light_ChannelTimeSet(0, 90, 15 * 60);
-    Light_ChannelTimeSet(0, 80, 16 * 60);
-    Light_ChannelTimeSet(0, 50, 16 * 60 + 30);
-    Light_ChannelTimeSet(0, 20, 17 * 60);
-    Light_ChannelTimeSet(0, 0, 17 * 60 + 50);
+    Light_AddChannelCfg(0, 10, 8, 0, 0);
+    Light_AddChannelCfg(0, 30, 8, 10, 0);
+    Light_AddChannelCfg(0, 60, 8, 30, 0);
+    Light_AddChannelCfg(0, 90, 9, 0, 0);
+    Light_AddChannelCfg(0, 100, 10, 0, 0);
+    Light_AddChannelCfg(0, 90, 15, 0, 0);
+    Light_AddChannelCfg(0, 80, 16, 0, 0);
+    Light_AddChannelCfg(0, 50, 16, 30, 0);
+    Light_AddChannelCfg(0, 20, 17, 0, 0);
+    Light_AddChannelCfg(0, 0, 18, 0, 0);
 
     //    2     Deep Blue
-    Light_ChannelTimeSet(1, 10, 9 * 60);
-    Light_ChannelTimeSet(1, 50, 9 * 60 + 30);
-    Light_ChannelTimeSet(1, 80, 10 * 60);
-    Light_ChannelTimeSet(1, 100, 11 * 60);
-    Light_ChannelTimeSet(1, 90, 14 * 60 + 30);
-    Light_ChannelTimeSet(1, 80, 15 * 60);
-    Light_ChannelTimeSet(1, 50, 15 * 60 + 30);
-    Light_ChannelTimeSet(1, 10, 16 * 60);
-    Light_ChannelTimeSet(1, 0, 16 * 60 + 30);
+    Light_AddChannelCfg(1, 10, 9, 0, 0);
+    Light_AddChannelCfg(1, 50, 9, 30, 0);
+    Light_AddChannelCfg(1, 80, 10, 0, 0);
+    Light_AddChannelCfg(1, 100, 11, 0, 0);
+    Light_AddChannelCfg(1, 90, 14, 30, 0);
+    Light_AddChannelCfg(1, 80, 15, 0, 0);
+    Light_AddChannelCfg(1, 50, 15, 30, 0);
+    Light_AddChannelCfg(1, 10, 16, 0, 0);
+    Light_AddChannelCfg(1, 0, 16, 30, 0);
     //    3     Blue
-    Light_ChannelTimeSet(2, 10, 9 * 60);
-    Light_ChannelTimeSet(2, 50, 9 * 60 + 30);
-    Light_ChannelTimeSet(2, 80, 10 * 60);
-    Light_ChannelTimeSet(2, 100, 11 * 60);
-    Light_ChannelTimeSet(2, 90, 14 * 60 + 30);
-    Light_ChannelTimeSet(2, 80, 15 * 60);
-    Light_ChannelTimeSet(2, 50, 15 * 60 + 30);
-    Light_ChannelTimeSet(2, 10, 16 * 60);
-    Light_ChannelTimeSet(2, 0, 16 * 60 + 30);
+    Light_AddChannelCfg(2, 10, 9, 0, 0);
+    Light_AddChannelCfg(2, 50, 9, 30, 0);
+    Light_AddChannelCfg(2, 80, 10, 0, 0);
+    Light_AddChannelCfg(2, 100, 11, 0, 0);
+    Light_AddChannelCfg(2, 90, 14, 30, 0);
+    Light_AddChannelCfg(2, 80, 15, 0, 0);
+    Light_AddChannelCfg(2, 50, 15, 30, 0);
+    Light_AddChannelCfg(2, 10, 16, 0, 0);
+    Light_AddChannelCfg(2, 0, 16, 30, 0);
     //    4     Green
-    Light_ChannelTimeSet(3, 10, 11 * 60);
-    Light_ChannelTimeSet(3, 80, 12 * 60);
-    Light_ChannelTimeSet(3, 100, 13 * 60);
-    Light_ChannelTimeSet(3, 80, 14 * 60);
-    Light_ChannelTimeSet(3, 0, 15 * 60);
+    Light_AddChannelCfg(3, 10, 11, 0, 0);
+    Light_AddChannelCfg(3, 80, 12, 0, 0);
+    Light_AddChannelCfg(3, 100, 13, 0, 0);
+    Light_AddChannelCfg(3, 80, 14, 0, 0);
+    Light_AddChannelCfg(3, 0, 15, 0, 0);
     //    5     Photo red
-    Light_ChannelTimeSet(4, 10, 11 * 60);
-    Light_ChannelTimeSet(4, 80, 12 * 60);
-    Light_ChannelTimeSet(4, 100, 13 * 60);
-    Light_ChannelTimeSet(4, 80, 14 * 60);
-    Light_ChannelTimeSet(4, 0, 15 * 60);
+    Light_AddChannelCfg(4, 10, 11, 0, 0);
+    Light_AddChannelCfg(4, 80, 12, 0, 0);
+    Light_AddChannelCfg(4, 100, 13, 0, 0);
+    Light_AddChannelCfg(4, 80, 14, 0, 0);
+    Light_AddChannelCfg(4, 0, 15, 0, 0);
     //    6     UV
-    Light_ChannelTimeSet(5, 10, 11 * 60);
-    Light_ChannelTimeSet(5, 80, 12 * 60);
-    Light_ChannelTimeSet(5, 100, 13 * 60);
-    Light_ChannelTimeSet(5, 80, 14 * 60);
-    Light_ChannelTimeSet(5, 0, 15 * 60);
+    Light_AddChannelCfg(5, 10, 11, 0, 0);
+    Light_AddChannelCfg(5, 80, 12, 0, 0);
+    Light_AddChannelCfg(5, 100, 13, 0, 0);
+    Light_AddChannelCfg(5, 80, 14, 0, 0);
+    Light_AddChannelCfg(5, 0, 15, 0, 0);
     //    7     Violet
-    Light_ChannelTimeSet(6, 10, 11 * 60);
-    Light_ChannelTimeSet(6, 80, 12 * 60);
-    Light_ChannelTimeSet(6, 100, 13 * 60);
-    Light_ChannelTimeSet(6, 80, 14 * 60);
-    Light_ChannelTimeSet(6, 0, 15 * 60);
+    Light_AddChannelCfg(6, 10, 11, 0, 0);
+    Light_AddChannelCfg(6, 80, 12, 0, 0);
+    Light_AddChannelCfg(6, 100, 13, 0, 0);
+    Light_AddChannelCfg(6, 80, 14, 0, 0);
+    Light_AddChannelCfg(6, 0, 15, 0, 0);
     //    8     Warm white
-    Light_ChannelTimeSet(7, 10, 7 * 60);
-    Light_ChannelTimeSet(7, 30, 8 * 60 + 30);
-    Light_ChannelTimeSet(7, 60, 8 * 60 + 50);
-    Light_ChannelTimeSet(7, 90, 9 * 60 + 10);
-    Light_ChannelTimeSet(7, 100, 10 * 60);
-    Light_ChannelTimeSet(7, 90, 15 * 60);
-    Light_ChannelTimeSet(7, 80, 16 * 60);
-    Light_ChannelTimeSet(7, 50, 16 * 60 + 30);
-    Light_ChannelTimeSet(7, 20, 17 * 60);
-    Light_ChannelTimeSet(7, 0, 18 * 60 + 30);
-    */
+    Light_AddChannelCfg(7, 10,  7,   0, 0);
+    Light_AddChannelCfg(7, 30,  8,  30, 0);
+    Light_AddChannelCfg(7, 60,  8,  50, 0);
+    Light_AddChannelCfg(7, 90,  9,  10, 0);
+    Light_AddChannelCfg(7, 100, 10,  0, 0);
+    Light_AddChannelCfg(7, 90,  15,  0, 0);
+    Light_AddChannelCfg(7, 80,  16,  0, 0);
+    Light_AddChannelCfg(7, 50,  16, 30, 0);
+    Light_AddChannelCfg(7, 20,  17,  0, 0);
+    Light_AddChannelCfg(7, 0,   18, 30, 0);
 
     Light_LoadChannelData(0, t);
     Light_LoadChannelData(1, t);
@@ -298,9 +271,8 @@ void Light_LoadConfig(uint32_t t)
 
 }
 
-void Light_Update(uint32_t t) 
+void Light_Update(uint32_t t)
 {
-
     if (!leddata.items[0].remnant) Light_TimeRemnantUpdate(0, t);
     if (!leddata.items[1].remnant) Light_TimeRemnantUpdate(1, t);
     if (!leddata.items[2].remnant) Light_TimeRemnantUpdate(2, t);
@@ -323,34 +295,34 @@ void Light_Update(uint32_t t)
 static void Light_UpdatePWM(uint8_t c)
 {
     // 更新PWM分频值
-    uint8_t level;
+    uint32_t pwmwidth;
 
     if (Light_SwitchGet(c) & Light_SWITCHSTATE_ON)
-        level = time_arr * Light_LumMaxRatio / 100;
+        pwmwidth = time_arr * Light_LumMaxRatio / 100;
     else if (Light_SwitchGet(c) & Light_SWITCHSTATE_OFF)
-        level = 0;
+        pwmwidth = 0;
     else
     {
         // 分频值计算
-        //   PWM            time_arr （2u 500KHz）
+        //   PWM            time_arr （20u 50KHz）
         //   最大亮度       Light_LumMaxRatio
-        //   
+        //
         //   Time最大计数  time_arr * 最大亮度%
         //   当前比率值 = time_arr * 最大亮度% * 当前比率%
         //
         //   由于分频值比较小，优先所有值先乘后除
-        level = time_arr * Light_LumMaxRatio * leddata.items[c].currrate / 10000;
+        pwmwidth = time_arr * Light_LumMaxRatio * leddata.items[c].currrate / 10000;
     }
 
     switch (c) {
-    case 0: TIM3->CCR1 = level; break;
-    case 1: TIM3->CCR2 = level; break;
-    case 2: TIM3->CCR3 = level; break;
-    case 3: TIM3->CCR4 = level; break;
-    case 4: TIM4->CCR1 = level; break;
-    case 5: TIM4->CCR2 = level; break;
-    case 6: TIM4->CCR3 = level; break;
-    case 7: TIM4->CCR4 = level; break;
+    case 0: TIM3->CCR1 = pwmwidth; break;
+    case 1: TIM3->CCR2 = pwmwidth; break;
+    case 2: TIM3->CCR3 = pwmwidth; break;
+    case 3: TIM3->CCR4 = pwmwidth; break;
+    case 4: TIM4->CCR1 = pwmwidth; break;
+    case 5: TIM4->CCR2 = pwmwidth; break;
+    case 6: TIM4->CCR3 = pwmwidth; break;
+    case 7: TIM4->CCR4 = pwmwidth; break;
     }
 }
 
@@ -360,14 +332,14 @@ static void Light_TimeRemnantUpdate(uint8_t c, uint32_t t)
     
     i = 0;
     while (i < leddata.items[c].count && (Light_CfgTime(leddata.items[c].cfgs[i]) < t)) i++;
-    
+
     if (i < leddata.items[c].count)
         leddata.items[c].remnant = Light_CfgTime(leddata.items[c].cfgs[i]) - t;
     else
         leddata.items[c].remnant = Light_CfgTime(leddata.items[c].cfgs[i]) + (24 * 60 * 60 - t);
 
-    if (i >= leddata.items[c].count) i = 0; 
-    
+    if (i >= leddata.items[c].count) i = 0;
+
     leddata.items[c].currrate = leddata.items[c].nextrate;
     leddata.items[c].nextrate = Light_CfgRate(leddata.items[c].cfgs[i]);
     Light_TuruStateSet(c);
@@ -378,9 +350,9 @@ void Light_ChannelTimeSet(uint8_t c, uint16_t ratio, uint32_t t)
     // 设置通道时间
 
     t *= 60; // 把分进位成秒
-    
+
     if (leddata.items[c].count >= MAXCFGS) return;
-    
+
     leddata.items[c].cfgs[leddata.items[c].count] = Light_CfgSetOfTime(ratio, t);
     leddata.items[c].count++;
 }
