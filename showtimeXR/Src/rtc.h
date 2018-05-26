@@ -17,7 +17,8 @@
 #endif
    
 
-int8_t RTC_init(void);
+uint8_t RTC_init(void);
+uint8_t RTC_initOther(void);
 uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
 uint32_t RTC_GetTime(void);
    

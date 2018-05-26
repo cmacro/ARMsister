@@ -116,7 +116,7 @@
           <TargetDllName>SARMCM3.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TCM.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCM3</TargetDlgDllArguments>
+          <TargetDlgDllArguments>-pSTM32F103C8</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -391,11 +391,6 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/main.c</FilePath>
-            </File>
-            <File>
               <FileName>armsis.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\armsis.c</FilePath>
@@ -406,9 +401,14 @@
               <FilePath>..\Src\rtc.c</FilePath>
             </File>
             <File>
-              <FileName>led.c</FileName>
+              <FileName>light.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Src\led.c</FilePath>
+              <FilePath>..\Src\light.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\main.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -426,9 +426,9 @@
               <FilePath>..\Src\rtc.h</FilePath>
             </File>
             <File>
-              <FileName>led.h</FileName>
+              <FileName>light.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Src\led.h</FilePath>
+              <FilePath>..\Src\light.h</FilePath>
             </File>
           </Files>
         </Group>
