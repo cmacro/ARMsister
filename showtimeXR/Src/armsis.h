@@ -43,15 +43,9 @@
 #define USART_CR3_REST                (uint32_t)0x00000000
 
 
-  
-#define SYSCLK_FREQ_72MHz  (uint32_t)72000000
-#define SystemCoreClock    SYSCLK_FREQ_72MHz
-
-
 
 //位带操作,实现51类似的GPIO控制功能
-//具体实现思想,参考<<CM3权威指南>>第五章(87页~92页).
-//IO口操作宏定义
+//IO位操作
 #define BITBAND(addr, bitnum) ((addr & 0xF0000000)+0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2)) 
 #define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr)) 
 #define BIT_ADDR(addr, bitnum)   MEM_ADDR(BITBAND(addr, bitnum)) 
@@ -73,7 +67,6 @@
 #define GPIOG_IDR_Addr    (GPIOG_BASE+8) //0x40011E08 
  
 //IO口操作,只对单一的IO口!
-//确保n的值小于16!
 #define PAout(n)   BIT_ADDR(GPIOA_ODR_Addr,n)  //输出 
 #define PAin(n)    BIT_ADDR(GPIOA_IDR_Addr,n)  //输入 
 #define PBout(n)   BIT_ADDR(GPIOB_ODR_Addr,n)  //输出 
@@ -90,10 +83,14 @@
 #define PGin(n)    BIT_ADDR(GPIOG_IDR_Addr,n)  //输入
 
 
-void Delay_init(void);
+void Delay_init(uint32_t sysclock);
 void Delay(uint32_t nCount);
 void Delay_ms(uint16_t nCount);
 void Delay_us(uint32_t nCount);
+
+
+void RCC_init(void);
+void NVIC_Config(void);
 
    
 #ifdef __cplusplus

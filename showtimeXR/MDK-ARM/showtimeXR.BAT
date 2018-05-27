@@ -7,6 +7,7 @@ SET CPU_CLOCK=0x007A1200
 "e:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\out\armsis.__i"
 "e:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\out\rtc.__i"
 "e:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\out\light.__i"
-"e:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\out\main.__i"
+"e:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\out\amscontrols.__i"
+"e:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\out\armsxr.__i"
 "e:\Keil_v5\ARM\ARMCC\Bin\ArmLink" --Via "..\out\showtimeXR.lnp"
 "e:\Keil_v5\ARM\ARMCC\Bin\fromelf.exe" "..\out\showtimeXR.axf" --i32combined --output "..\out\showtimeXR.hex"

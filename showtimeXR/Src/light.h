@@ -16,6 +16,8 @@
  extern "C" {
 #endif
 
+#define SYSCLK_FREQ_72MHz  (uint32_t)72000000
+#define SYSCLK_FREQ_48MHz  (uint32_t)48000000
 
 int8_t      Light_init(void);
 void        Light_LoadConfig(uint32_t t);
@@ -35,6 +37,9 @@ void        Light_ChannelTimeSet(uint8_t c, uint16_t ratio, uint32_t t);
 #define LED_ADJUST_TURN     0x2         // 翻转方式
 // 调整亮度 channel： Led 通道   state
 uint8_t     Light_AdjustLum(uint8_t channel, uint8_t state);
+
+
+void Key_Update(void);
 
 #ifdef __cplusplus
  }

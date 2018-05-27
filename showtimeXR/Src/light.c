@@ -1,8 +1,8 @@
 
-
 #include "light.h"
 #include <stddef.h> // needed for definition of NULL
-#include <stdlib.h> // malloc
+#include <stdlib.h> // malloc。
+
 
 #define MAXCFGS     12      // 可配置亮度比例数量
 #define CHANNELCNT  8       // pwm通道数量
