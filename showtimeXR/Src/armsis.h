@@ -17,6 +17,11 @@
 
 #include "stm32f1xx.h"
 #include "serial.h"
+     
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+     
    
 #define GPIO_CR_RESET                 (uint32_t)0x44444444 
 #define GPIO_CR_MODE_INPUT            (uint32_t)0x00000000
@@ -43,8 +48,6 @@
 #define USART_CR3_REST                (uint32_t)0x00000000
 
 
-
-//位带操作,实现51类似的GPIO控制功能
 //IO位操作
 #define BITBAND(addr, bitnum) ((addr & 0xF0000000)+0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2)) 
 #define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr)) 

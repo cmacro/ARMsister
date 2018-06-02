@@ -48,6 +48,7 @@ static LedData_t leddata;
 #define Light_SWITCHSTATE_AUTO  0X00    // 
 #define Light_SWITCHSTATE_ON    0x01
 #define Light_SWITCHSTATE_OFF   0X10
+#define Light_SWITCHSTATE_MARK  0X11
 
 static void Light_LoadChannelData(uint8_t c, uint32_t t);
 #define Light_SwitchGet(c)          (leddata.switchstate >> (c << 1) & 0xFF)
@@ -163,7 +164,10 @@ static void Light_LoadChannelData(uint8_t c, uint32_t t)
     uint8_t i;
     i = leddata.items[c].count - 1;
     while (i > 0 && (Light_CfgTime(leddata.items[c].cfgs[i]) > t)) i--;
-    leddata.items[c].nextrate = Light_CfgRate(leddata.items[c].cfgs[i]);
+    
+    if ((i > 0) || (t >= Light_CfgTime(leddata.items[c].cfgs[i]))) {
+        leddata.items[c].nextrate = Light_CfgRate(leddata.items[c].cfgs[i]);
+    }
     Light_TimeRemnantUpdate(c, t);
 }
 
@@ -189,8 +193,10 @@ void Light_LoadConfig(uint32_t t)
     //    6     UV
     //    7     Violet
     //    8     Warm white
+    uint8_t c;
     leddata.maxratio = 100;
     leddata.channelcount = 8;
+    leddata.selectChannel = 0;
 
     // 1     Cool White
     Light_AddChannelCfg(0, 10, 8, 0, 0);
@@ -249,7 +255,6 @@ void Light_LoadConfig(uint32_t t)
     Light_AddChannelCfg(6, 80, 14, 0, 0);
     Light_AddChannelCfg(6, 0, 15, 0, 0);
     //    8     Warm white
-    Light_AddChannelCfg(7, 10,  7,   0, 0);
     Light_AddChannelCfg(7, 30,  8,  30, 0);
     Light_AddChannelCfg(7, 60,  8,  50, 0);
     Light_AddChannelCfg(7, 90,  9,  10, 0);
@@ -260,36 +265,26 @@ void Light_LoadConfig(uint32_t t)
     Light_AddChannelCfg(7, 20,  17,  0, 0);
     Light_AddChannelCfg(7, 0,   18, 30, 0);
 
-    Light_LoadChannelData(0, t);
-    Light_LoadChannelData(1, t);
-    Light_LoadChannelData(2, t);
-    Light_LoadChannelData(3, t);
-    Light_LoadChannelData(4, t);
-    Light_LoadChannelData(5, t);
-    Light_LoadChannelData(6, t);
-    Light_LoadChannelData(7, t);
 
+    for (c = 0; c < leddata.channelcount; c++) {
+        Light_LoadChannelData(c, t);
+    }
 }
 
 void Light_Update(uint32_t t)
 {
-    if (!leddata.items[0].remnant) Light_TimeRemnantUpdate(0, t);
-    if (!leddata.items[1].remnant) Light_TimeRemnantUpdate(1, t);
-    if (!leddata.items[2].remnant) Light_TimeRemnantUpdate(2, t);
-    if (!leddata.items[3].remnant) Light_TimeRemnantUpdate(3, t);
-    if (!leddata.items[4].remnant) Light_TimeRemnantUpdate(4, t);
-    if (!leddata.items[5].remnant) Light_TimeRemnantUpdate(5, t);
-    if (!leddata.items[6].remnant) Light_TimeRemnantUpdate(6, t);
-    if (!leddata.items[7].remnant) Light_TimeRemnantUpdate(7, t);
-
-    Light_UpdateChannel(0);
-    Light_UpdateChannel(1);
-    Light_UpdateChannel(2);
-    Light_UpdateChannel(3);
-    Light_UpdateChannel(4);
-    Light_UpdateChannel(5);
-    Light_UpdateChannel(6);
-    Light_UpdateChannel(7);
+    uint8_t c;
+    for (c = 0; c < leddata.channelcount; c++)
+    {
+        if (!leddata.items[0].remnant) {
+            Light_TimeRemnantUpdate(0, t);
+        }
+        
+        if (Light_TurnStateGet(c)) { 
+            Light_TuruStateClr(c); 
+            Light_UpdatePWM(c); 
+        } 
+    }
 }
 
 static void Light_UpdatePWM(uint8_t c)
@@ -297,7 +292,7 @@ static void Light_UpdatePWM(uint8_t c)
     // 更新PWM分频值
     uint32_t pwmwidth;
 
-    if (Light_SwitchGet(c) & Light_SWITCHSTATE_ON)
+    if (Light_SwitchGet(c) & Light_SWITCHSTATE_ON) 
         pwmwidth = time_arr * Light_LumMaxRatio / 100;
     else if (Light_SwitchGet(c) & Light_SWITCHSTATE_OFF)
         pwmwidth = 0;
@@ -365,26 +360,35 @@ uint8_t Light_AdjustLum(uint8_t channel, uint8_t state)
 
 void Light_TimeStep(void)
 {
-    Light_ChannelTimeStep(0);
-    Light_ChannelTimeStep(1);
-    Light_ChannelTimeStep(2);
-    Light_ChannelTimeStep(3);
-    Light_ChannelTimeStep(4);
-    Light_ChannelTimeStep(5);
-    Light_ChannelTimeStep(6);
-    Light_ChannelTimeStep(7);
+    uint8_t c;
+    for (c = 0; c < leddata.channelcount; c++) {   
+        Light_ChannelTimeStep(c);
+    }
 }
 
 uint8_t Light_Turn(uint8_t c)
 {
     uint8_t s;
 
-    Light_TuruStateSet(c);
+    //Light_TuruStateSet(c);
 
     s = Light_SwitchGet(c);
-    if (!s) s = s >> 1;
-    else    s = 0x2;
+    if (s == Light_SWITCHSTATE_AUTO) 
+        s = Light_SWITCHSTATE_ON;
+    else if (s == Light_SWITCHSTATE_ON)
+        s = Light_SWITCHSTATE_OFF;
+    else
+        s = Light_SWITCHSTATE_AUTO;
+    
+    leddata.switchstate &= ~(Light_SWITCHSTATE_MARK << (c << 1));
+    leddata.switchstate |= s << (c << 1);
+    
+    // 低电平亮
+    LED_STATE = s != Light_SWITCHSTATE_ON;
+    
     Light_SwitchSet(c, s);
+    
+    Light_UpdatePWM(c);
 
     return Light_SwitchGet(c);
 }
@@ -405,8 +409,6 @@ uint8_t Light_CurrentChannel(void)
 uint8_t Light_TurnOf(uint8_t c, uint8_t state)
 {
     // 控制单个
-
     Light_TuruStateSet(c);
-
     return 0;
 }
