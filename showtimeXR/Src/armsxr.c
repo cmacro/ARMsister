@@ -4,15 +4,14 @@
 #include "rtc.h"
 #include "light.h"
 #include "oled.h"
-#include "bmp.h"
 #include "screenbk.h"
 
 
 //#define SystemCoreClock    SYSCLK_FREQ_72MHz
 uint32_t SystemCoreClock = SYSCLK_FREQ_48MHz;
-uint32_t currentTime     = 0;
 uint8_t  secFlag         = 0;
-
+uint32_t currentTime     = 0;
+uint32_t Light_States    = 0x0;
  
 
 void SystemInit(void)
@@ -30,10 +29,11 @@ void amsXR_LoadConfig(void)
 {
     Delay_init(SystemCoreClock);
 
-    RTC_Set(2018, 4, 16, 7, 59, 30);
+    RTC_Set(2018, 4, 16, 7, 0, 0);
     currentTime = RTC_GetTime();
-    Light_LoadConfig(currentTime);
+    Light_LoadConfig();
     NVIC_Config();
+    
 }
 
 int main(void)
@@ -48,15 +48,22 @@ int main(void)
     OLED_DrawBMP(0, 0, 128, 4, gImage_screenbk);
     //OLED_ShowString(0, 0, "0123456789", 8); //DrawBMP
     AMSScreen_ShowTime(currentTime);
-
-    while (1) {        
+    Light_InitChannelTimes(currentTime);
+    
+    while (1) {  
+       if (Key_Update()) {
+           currentTime = RTC_GetTime();
+           AMSScreen_ShowTime(currentTime);
+           Light_InitChannelTimes(currentTime);
+       }
+        
         if (secFlag) {
             AMSScreen_ShowTime(currentTime);
             Light_TimeStep();
             Light_Update(currentTime);
             secFlag = 0;
         }
-       Key_Update();
+
     }
 }
 

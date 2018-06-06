@@ -82,22 +82,25 @@ uint32_t GetSecCount(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, u
     return seccount;
 }
 
+uint8_t RTC_SetTickCount(uint32_t t) {
+    
+    PWR->CR |= PWR_CR_DBP;    //取消备份区写保护
+    RTC->CRL |= RTC_CRL_CNF;  //允许配置
+
+    RTC->CNTL = t & 0xffff;
+    RTC->CNTH = t >> 16;
+
+    RTC->CRL &= ~RTC_CRL_CNF;  //配置更新
+    RCT_WaitRtOff();    
+    return 0;
+}
+
 uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec)
 {
 
     uint32_t seccount;
     seccount = GetSecCount(syear, smon, sday, hour, min, sec);
-
-    PWR->CR |= PWR_CR_DBP;    //取消备份区写保护
-    RTC->CRL |= RTC_CRL_CNF;  //允许配置
-
-    RTC->CNTL = seccount & 0xffff;
-    RTC->CNTH = seccount >> 16;
-
-    RTC->CRL &= ~RTC_CRL_CNF;  //配置更新
-    RCT_WaitRtOff();
-
-    return 0;
+    return RTC_SetTickCount(seccount);
 }
 
 uint32_t RTC_GetTime(void) {
@@ -108,3 +111,29 @@ uint32_t RTC_GetTime(void) {
 
     return timecnt;
 }
+
+uint32_t RTC_UpTimeOf(uint8_t kind) {
+    uint32_t t, d;
+    
+    t = RTC->CNTH << 16 | RTC->CNTL;
+    d = 0;
+    if (kind == TIMEKIND_HOUR) {
+        d = (t % 86400) / 3600;
+        t -= d * 3600;
+        d = (d < 23) ? d + 1 : 0;
+        d *= 3600;
+    } 
+    else {
+        d = (t % 86400 % 3600) / 60;
+        t -= d * 60;
+        d = (d < 59) ? d + 1 : 0;
+        d *= 60;
+    }
+    t += d; 
+    
+    RTC_SetTickCount(t);
+    
+    return t;
+}
+
+

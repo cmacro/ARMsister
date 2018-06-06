@@ -1,8 +1,22 @@
 
-#include "light.h"
+// 8路led，引脚对应
+//
+// time3  TIME 4
+//
+// channel  color
+//    1     Cool White    PA6   ---- LED 1 通道
+//    2     Deep Blue     PA7   ---- 2
+//    3     Blue          PB0   ---- 3
+//    4     Green         PB1   ---- 4
+//    5     Photo red     PB6   ---- 5
+//    6     UV            PB7   ---- 6 
+//    7     Violet        PB8   ---- 7
+//    8     Warm white    PB9   ---- 8
+//
+
 #include <stddef.h> // needed for definition of NULL
 #include <stdlib.h> // malloc。
-
+#include "light.h"
 
 #define MAXCFGS     12      // 可配置亮度比例数量
 #define CHANNELCNT  8       // pwm通道数量
@@ -155,19 +169,26 @@ int8_t Light_init(void)
     TIM4->CCER = TIM_CCER_CC1E | TIM_CCER_CC2E | TIM_CCER_CC3E | TIM_CCER_CC4E;
     TIM4->CR1 |= TIM_CR1_CEN | TIM_CR1_ARPE;
 
-
     return 0;
 }
 
 static void Light_LoadChannelData(uint8_t c, uint32_t t)
 {
     uint8_t i;
+    if (leddata.items[c].count == 0) {
+        return ;
+    }
+       
     i = leddata.items[c].count - 1;
     while (i > 0 && (Light_CfgTime(leddata.items[c].cfgs[i]) > t)) i--;
-    
-    if ((i > 0) || (t >= Light_CfgTime(leddata.items[c].cfgs[i]))) {
+
+    leddata.items[c].remnant = 0;
+    leddata.items[c].nextrate = 0; 
+    if (t >= Light_CfgTime(leddata.items[c].cfgs[i])) {
         leddata.items[c].nextrate = Light_CfgRate(leddata.items[c].cfgs[i]);
     }
+    
+    
     Light_TimeRemnantUpdate(c, t);
 }
 
@@ -181,19 +202,17 @@ static void Light_AddChannelCfg(uint8_t c, uint16_t r, uint16_t h, uint16_t m, u
     leddata.items[c].count++;
 }
 
-void Light_LoadConfig(uint32_t t)
+void Light_LoadConfig()
 {
-
     // channel  color
-    //    1     Cool White
-    //    2     Deep Blue
-    //    3     Blue
-    //    4     Green
-    //    5     Photo red
-    //    6     UV
-    //    7     Violet
-    //    8     Warm white
-    uint8_t c;
+    //    1     Cool White    PA6   ---- LED 1 通道
+    //    2     Deep Blue     PA7   ---- 2
+    //    3     Blue          PB0   ---- 3
+    //    4     Green         PB1   ---- 4
+    //    5     Photo red     PB6   ---- 5
+    //    6     UV            PB7   ---- 6 
+    //    7     Violet        PB8   ---- 7
+    //    8     Warm white    PB9   ---- 8
     leddata.maxratio = 100;
     leddata.channelcount = 8;
     leddata.selectChannel = 0;
@@ -264,12 +283,16 @@ void Light_LoadConfig(uint32_t t)
     Light_AddChannelCfg(7, 50,  16, 30, 0);
     Light_AddChannelCfg(7, 20,  17,  0, 0);
     Light_AddChannelCfg(7, 0,   18, 30, 0);
+}
 
-
+void Light_InitChannelTimes(uint32_t t)
+{
+    uint8_t c;
     for (c = 0; c < leddata.channelcount; c++) {
         Light_LoadChannelData(c, t);
     }
 }
+
 
 void Light_Update(uint32_t t)
 {
@@ -369,8 +392,6 @@ void Light_TimeStep(void)
 uint8_t Light_Turn(uint8_t c)
 {
     uint8_t s;
-
-    //Light_TuruStateSet(c);
 
     s = Light_SwitchGet(c);
     if (s == Light_SWITCHSTATE_AUTO) 

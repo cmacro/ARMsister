@@ -446,11 +446,6 @@
               <FilePath>..\Src\light.h</FilePath>
             </File>
             <File>
-              <FileName>bmp.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Src\bmp.h</FilePath>
-            </File>
-            <File>
               <FileName>oledfont.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Src\oledfont.h</FilePath>

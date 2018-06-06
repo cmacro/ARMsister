@@ -8,21 +8,17 @@ void IIC_Start()
 {
     SDA_OUT();
     IIC_SDA = 1;
-    IIC_SCL = 1; Delay_us(4);
-    IIC_SDA = 0; Delay_us(4);
+    IIC_SCL = 1; __nop(); //Delay_us(4);
+    IIC_SDA = 0; __nop(); //Delay_us(4);
     IIC_SCL = 0; // 钳住总线
 }
-
 
 void IIC_Stop()
 {
     SDA_OUT();
     IIC_SCL = 0;
-    IIC_SDA = 0; 
-    Delay_us(4);
-    
-    IIC_SCL = 1;
-    Delay_us(4);
+    IIC_SDA = 0; __nop(); //Delay_us(4);
+    IIC_SCL = 1; __nop(); //Delay_us(4);
     
     IIC_SDA = 1; // 释放总线
 }
@@ -51,9 +47,9 @@ void Write_IIC_Byte(unsigned char txd)
     IIC_SCL = 0; //拉低时钟开始数据传输
     for(t = 0; t < 8; t++) {
         IIC_SDA = (txd & 0x80) >> 7;
-        txd <<= 1; Delay_us(2);
-        IIC_SCL=1; Delay_us(2);
-        IIC_SCL=0; Delay_us(2);
+        txd <<= 1; __nop(); //Delay_us(2);
+        IIC_SCL=1; __nop(); //Delay_us(2);
+        IIC_SCL=0; __nop(); //Delay_us(2);
     }
 
 }
@@ -116,7 +112,6 @@ void fill_picture(unsigned char fill_Data)
 }
 
 //坐标设置
-
 void OLED_Set_Pos(unsigned char x, unsigned char y)
 {   OLED_WR_Byte(0xb0 + y, OLED_CMD);
     OLED_WR_Byte(((x & 0xf0) >> 4) | 0x10, OLED_CMD);
@@ -170,21 +165,11 @@ void OLED_ShowChar(u8 x, u8 y, u8 chr, u8 Char_Size)
     unsigned char c = 0, i = 0;
     c = chr - ' '; //得到偏移后的值
     if (x > Max_Column - 1) {x = 0; y = y + 2;}
-    if (Char_Size == 16)
-    {
-        OLED_Set_Pos(x, y);
-        for (i = 0; i < 8; i++)
-            OLED_WR_Byte(F8X16[c * 16 + i], OLED_DATA);
-        OLED_Set_Pos(x, y + 1);
-        for (i = 0; i < 8; i++)
-            OLED_WR_Byte(F8X16[c * 16 + i + 8], OLED_DATA);
-    }
-    else {
-        OLED_Set_Pos(x, y);
-        for (i = 0; i < 6; i++)
-            OLED_WR_Byte(F6x8[c][i], OLED_DATA);
 
-    }
+    OLED_Set_Pos(x, y);
+    for (i = 0; i < 6; i++)
+        OLED_WR_Byte(F6x8[c][i], OLED_DATA);
+
 }
 
 //m^n函数
@@ -194,6 +179,7 @@ u32 oled_pow(u8 m, u8 n)
     while (n--)result *= m;
     return result;
 }
+
 //显示2个数字
 //x,y :起点坐标
 //len :数字的位数
@@ -230,23 +216,7 @@ void OLED_ShowString(u8 x, u8 y, unsigned char *chr, u8 Char_Size)
         j++;
     }
 }
-//显示汉字
-void OLED_ShowCHinese(u8 x, u8 y, u8 no)
-{
-    u8 t, adder = 0;
-    OLED_Set_Pos(x, y);
-    for (t = 0; t < 16; t++)
-    {
-        OLED_WR_Byte(Hzk[2 * no][t], OLED_DATA);
-        adder += 1;
-    }
-    OLED_Set_Pos(x, y + 1);
-    for (t = 0; t < 16; t++)
-    {
-        OLED_WR_Byte(Hzk[2 * no + 1][t], OLED_DATA);
-        adder += 1;
-    }
-}
+
 /***********功能描述：显示显示BMP图片128×32起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
 void OLED_DrawBMP(unsigned char x0, unsigned char y0, unsigned char x1, unsigned char y1, const unsigned char BMP[])
 {
