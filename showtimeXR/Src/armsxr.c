@@ -5,6 +5,7 @@
 #include "light.h"
 #include "oled.h"
 #include "bmp.h"
+#include "screenbk.h"
 
 
 //#define SystemCoreClock    SYSCLK_FREQ_72MHz
@@ -37,7 +38,6 @@ void amsXR_LoadConfig(void)
 
 int main(void)
 {
-    LED_STATE = 0;
     Delay_init(SystemCoreClock);
     OLED_Init();
     
@@ -45,11 +45,13 @@ int main(void)
     Light_Update(currentTime);
     
     OLED_Clear();
+    OLED_DrawBMP(0, 0, 128, 4, gImage_screenbk);
+    //OLED_ShowString(0, 0, "0123456789", 8); //DrawBMP
+    AMSScreen_ShowTime(currentTime);
 
-    OLED_DrawBMP(0, 0, 128, 4, BMP1);
-    LED_STATE = 1;
     while (1) {        
         if (secFlag) {
+            AMSScreen_ShowTime(currentTime);
             Light_TimeStep();
             Light_Update(currentTime);
             secFlag = 0;

@@ -43,6 +43,9 @@ uint8_t     Light_AdjustLum(uint8_t channel, uint8_t state);
 #define LED_STATE   PBout(12)  
 #define WK_Trun     PBin(13)        // 开关键
 
+   
+void AMSScreen_ShowTime(uint32_t t);
+
 void AMSKey_Init(void);
 void Key_Update(void);
 

@@ -15,7 +15,8 @@ static uint32_t Key_StateValues = 0x0;
 #define Key_StateClr(keyid)         (Key_StateValues &= ~(keyid))
 #define Key_StateSet(keyid)         (Key_StateValues |= (keyid))
 
-
+#define KeyClickStateDown()         (LED_STATE = 0)
+#define KeyClickStateUp()           (LED_STATE = 1)
 
 void AMSKey_Init(void)
 {
@@ -36,6 +37,8 @@ void AMSLedState_init(void)
     
     GPIOB->CRH &= ~(GPIO_CRH_MODE12_Msk | GPIO_CRH_CNF12_Msk);
     GPIOB->CRH |= GPIO_CRH_MODE12_1; // 推挽输出 2M
+    
+    LED_STATE = 1;
 }
 
 void AMSKey_Check(void)
@@ -43,17 +46,16 @@ void AMSKey_Check(void)
     if (WK_Trun == 1) 
     {
         
-        //LED_STATE = 1;
-        //Delay_ms(10); // 去抖
+        //Delay_ms(3); // 去抖
         if(WK_Trun == 1) {
-            //LED_STATE = ~LED_STATE;
-            //Key_StateSet(KEY_TURN);
             Key_StateValues |= 1 << 5U;
+            KeyClickStateDown();
         }
     }
     else if (Key_StateValues & (1 << 5)) {
         Key_StateValues &= ~(1 << 5);
         Key_StateSet(KEY_TURN);
+        KeyClickStateUp();
     }
 }
 

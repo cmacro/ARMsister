@@ -420,6 +420,11 @@
               <FileType>1</FileType>
               <FilePath>..\Src\oled.c</FilePath>
             </File>
+            <File>
+              <FileName>screen.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\screen.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -454,6 +459,11 @@
               <FileName>oled.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Src\oled.h</FilePath>
+            </File>
+            <File>
+              <FileName>screenbk.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Src\screenbk.h</FilePath>
             </File>
           </Files>
         </Group>

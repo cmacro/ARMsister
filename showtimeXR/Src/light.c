@@ -383,11 +383,7 @@ uint8_t Light_Turn(uint8_t c)
     leddata.switchstate &= ~(Light_SWITCHSTATE_MARK << (c << 1));
     leddata.switchstate |= s << (c << 1);
     
-    // 低电平亮
-    LED_STATE = s != Light_SWITCHSTATE_ON;
-    
     Light_SwitchSet(c, s);
-    
     Light_UpdatePWM(c);
 
     return Light_SwitchGet(c);
